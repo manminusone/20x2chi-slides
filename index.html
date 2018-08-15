@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<script src="js/slides.js"></script>
+	<link rel="stylesheet" href="css/slides.css">
+	<!-- check the slides.css for other included stuff -->
+
+</head>
+<body>
+
+	<!-- Basic terminology:
+
+		A <slide> is a single instance of grouped content that is shown all at once. The content is divided into <layer> tags,
+		which are stacked on top of each oher using z-index values. (Keep this in mind when layers include images that you
+		want to overlay on top of other layers. You might have to include transparency on those images.)
+
+		Each <layer> tag may include <span> tags with further classes on them, for formatting or animation purposes.
+
+		For details on the available animations see the Animate.css docs at <https://github.com/daneden/animate.css/>. -->
+
+
+	<slide>
+		<layer data-anim="fadeIn" class="bkg"> <img src="demo-img/slide-1.png"> </layer>
+		<layer class="gridded">
+			<span class="header"> <p> This is your first slide. It has a header & footer.</p> </span>
+		</layer>
+		<layer class="gridded">
+			<span class="footer"> <p> See? We've got both! </p> </span>
+		</layer>
+	</slide>
+
+	<slide>
+		<layer data-anim="rollIn" class="bkg"><img src="demo-img/slide-2.png"></layer>
+		<layer class="gridded">
+			<span class="quote-left">
+				<p> So this slide has a text block that can be used for "quotations". </p>
+			</span>
+		</layer>
+	</slide>	
+
+	<slide>
+		<layer data-anim="zoomIn" class="bkg"><img src="demo-img/slide-3.png"></layer>
+		<layer class="gridded">
+			<span class="quote-left split-word">
+				<p> And this slide has a "split-span," which is what I call SPAN tags that have been split up for animations.</p>
+			</span>
+		</layer>
+	</slide>
+
+	<slide> 
+		<layer data-anim="fadeInDown" class="bkg"><img src="demo-img/slide-4.png"></layer>
+		<layer class="gridded">
+			<span class="quote-right split-p">
+				<p> This span displays one paragraph at a time. </p>
+				<p> For very heavy statements. </p>
+				<p> That aren't too long. </p>
+			</span>
+		</layer>
+	</slide>
+	<slide>
+		<layer data-anim="flipInX" class="bkg"><img src="demo-img/slide-5.png"></layer>
+		<layer class="gridded">
+			<span class="middler">
+				<p> And this is the final slide. </p>
+				<p> Now we cycle back to the beginning. </p>
+			</span>
+		</layer>
+	</slide>
+
+	<script language="JavaScript">
+		Slides.start({
+			defaultTransition: 'fadeIn',
+			defaultLength: '1s',
+			defaultDelay: '3s',
+			choiceSize: 1,
+			debug: false
+		});
+	</script>
+
+</body>
+
+</html>

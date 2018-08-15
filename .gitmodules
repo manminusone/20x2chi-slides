@@ -1,0 +1,6 @@
+[submodule "links/animate.css"]
+	path = links/animate.css
+	url = https://github.com/daneden/animate.css.git
+[submodule "links/font-awesome"]
+	path = links/font-awesome
+	url = https://github.com/FortAwesome/Font-Awesome.git

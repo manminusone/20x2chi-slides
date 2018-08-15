@@ -1,0 +1,98 @@
+
+@import url('animate.min.css');
+@import url('fontawesome-all.css');
+@import url('https://fonts.googleapis.com/css?family=Lobster');  /* TODO - fix this */
+
+
+body {
+	background: #000;
+	margin: 0;
+	overflow: hidden;
+}
+
+slide {
+	height: 100vh;
+	width: 100vw;
+	position: absolute;
+	top: 0;
+}
+
+slide layer {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	text-align: center;
+}
+
+slide layer.bkg  img {
+	height: 100vh;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+layer h1,p,span {
+	color: white;
+	font-size: 72px;
+	font-family: 'Lobster',sans-serif;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.split-item { opacity: 0; }
+
+.noDelay { animation-delay: 0.1s; transition-delay: 0.1s; }
+
+
+.pauseLayer{
+	zIndex: 9999;
+	height: 100vh;
+	height: 100vw;
+	position: absolute;
+	top: 0;
+	opacity: 0;
+	color: #ccc;
+}
+
+/* grid stuff */
+
+.gridded {
+	display: grid;
+	height: 100vh;
+	   grid-template-rows: [row-start row-1-start] 1fr [row-1-end row-2-start] 1fr [row-2-end row-3-start] 1fr [row-3-end row-4-start] 1fr [row-4-end row-5-start] 1fr [row-end row-5-end];
+	grid-template-columns: [col-start col-1-start] 1fr [col-1-end col-2-start] 1fr [col-2-end col-3-start] 1fr [col-3-end col-4-start] 1fr [col-4-end col-5-start] 1fr [col-end col-5-end];
+}
+
+.footer {
+	grid-row-start: row-5-start;
+	grid-row-end: row-end;
+	grid-column-start: col-start;
+	grid-column-end: col-end;
+}
+
+.header {
+	grid-row-start: row-start;
+	grid-row-end: row-2-start;
+	grid-column-start: col-start;
+	grid-column-end: col-end;
+}
+
+.middler {
+	grid-row-start: row-3-start;
+	grid-row-end: row-3-end;
+	grid-column-start: col-start;
+	grid-column-end: col-end;
+}
+.quote-left {
+	grid-row-start: row-2-start;
+	grid-row-end: row-4-end;
+	grid-column-start: col-start;
+	grid-column-end: col-3-end;
+}
+.quote-right {
+	grid-row-start: row-2-start;
+	grid-row-end: row-4-end;
+	grid-column-start: col-3-start;
+	grid-column-end: col-end;
+}
