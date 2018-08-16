@@ -179,7 +179,13 @@ var Slides = (function() {
 
 	return {
 
-		loop: function() { animationLoop(); },
+		loop: function() { 
+			if (current.status == '') {
+				chooseSlide();
+				current.status = 'fadeIn';
+			}
+			animationLoop(); 
+		},
 
 		start: function(args) {
 			if (args.defaultTransition) dflt.transition = args.defaultTransition;
@@ -233,7 +239,7 @@ var Slides = (function() {
 			if (! args.debug) {
 
 				chooseSlide();
-				window.addEventListener('animationstart', function(evt) { console.log(evt); });
+				window.addEventListener('animationstart', function(evt) { console.log('animationstart'); console.log(evt); });
 				window.addEventListener('animationend', animationLoop);
 				current.status='fadeIn';
 				setTimeout(animationLoop, 10);

@@ -7,22 +7,29 @@
 copyfile () {
 	if [ ! -e "$1" ];
 	then
-		echo "Hey, you didn't grab the $2 repo. You need to add the flag '--recurse=submodules' to your git clone command."
+		echo "Hey, you didn't grab the $3 repo. You need to add the flag"
+		echo "  '--recurse=submodules' to your git clone command."
+		echo " "
+		echo "Although, if you're reading this, you've probably cloned the"
+		echo "  repo, huh? Okay, try this on for size:"
+		echo " "
+		echo "    git submodule update --init --recursive"
+		echo " "
 		exit 0
 	fi
-	echo "Copying $2 file to css directory"
-	cp "$1" css/	
+	echo "Copying $3 file to css directory"
+	cp -r "$1" "$2"
 }
 
 doallcopies () {
-	copyfile "links/animate.css/animate.min.css" "Animate.css"
-	copyfile "links/font-awesome/use-on-desktop/Font Awesome 5 Free-Solid-900.otf" "Font Awesome"
+	copyfile "links/animate.css/animate.min.css"               "css/" "Animate.css"
 }
 
 if [ "$1" == "" ];
 then
 	doallcopies
-	echo "Done. Don't forget to check the css files for any external font files that might be used!"
+	echo "Done. Don't forget to check the css files for any external"
+	echo "  font files that might be used!"
 else 
 	if [ "$1" == "dist" ];
 	then
