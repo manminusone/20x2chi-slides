@@ -1,9 +1,10 @@
-var Slides = (function() {
-	'use strict';
-
 	var SlideList = Array();
 	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s' };
 	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false };
+
+var Slides = (function() {
+	'use strict';
+
 
 
 
@@ -14,6 +15,7 @@ var Slides = (function() {
 		return {
 			name: 'split-span',
 			canEdit: function(layer) { return layer.getElementsByClassName('split-p').length + layer.getElementsByClassName('split-char').length + layer.getElementsByClassName('split-word').length; },
+			canMulti: function(layer) { return (layer.getElementsByClassName('split-p').length == 0) },
 			process: function(layer) {
 				var processed = false;
 
@@ -26,7 +28,8 @@ var Slides = (function() {
 							para.classList.add('split-item'); 
 							var thisClass = layer.dataset['anim'] || dflt.transition;
 							para.dataset['anim'] = thisClass; 
-							para.classList.add(thisClass);
+							para.style.opacity=0;
+							// para.classList.add(thisClass);
 							if (! para.style.animationDuration) para.style.animationDuration=dflt.length;
 
 						});
@@ -71,16 +74,17 @@ var Slides = (function() {
 				}
 				if (processed) { layer.style.opacity=1; layer.style.animationDelay='0s'; layer.style.transitionDelay='0s'; }
 			},
-			preCheck: function(layer, event) {
+			preCheck: function(layer, event, lObj) {
 				var retval = false;
 
-				current.handleAnimStart = false; // if we don't update any nodes in this function, we can go back to normal processing
+				if (lObj.canMulti) current.handleAnimStart = false; // if we don't update any nodes in this function, we can go back to normal processing
 
 				var possibles = layer.getElementsByClassName('split-item');
+
 				if (possibles.length > 0) {
 					collectionForEach(possibles, function(node,num) {
-						if (! node.classList.contains('animated') && retval == false) {
-							current.handleAnimStart = true;
+						if (! node.classList.contains('animated') &&  retval == false) {
+							if (lObj.canMulti) current.handleAnimStart = true;
 							node.style.opacity=1;
 							node.className = 'split-item ' + (node.dataset['anim'] || dflt.transition) + ' animated';
 							retval = true;
@@ -152,7 +156,7 @@ var Slides = (function() {
 			// handle the start
 			for (var iter = 0; iter < plugins.length; ++iter)
 				if (plugins[iter].preCheck) {
-					var retval = plugins[iter].preCheck(current.Layer.obj, evt);
+					var retval = plugins[iter].preCheck(current.Layer.obj, evt, current.Layer);
 					if (retval) {
 						return;
 					}
@@ -176,7 +180,7 @@ var Slides = (function() {
 
 				for (var iter = 0; iter < plugins.length; ++iter)
 					if (plugins[iter].preCheck) {
-						var retval = plugins[iter].preCheck(thisL, evt);
+						var retval = plugins[iter].preCheck(thisL, evt, current.Layer);
 						if (retval) {
 							return;
 						}
@@ -195,7 +199,7 @@ var Slides = (function() {
 				current.fadesLeft = current.Slide.LayerList.length;
 			}
 		} else if (current.status == 'fadeOut') {
-			if (evt && evt.target.nodeName == 'LAYER' && current.fadesLeft > 0) {
+			if (evt && (evt.type == 'manual-loop' || (evt.target && evt.target.nodeName == 'LAYER')) && current.fadesLeft > 0) {
 				--current.fadesLeft;
 				if (current.fadesLeft == 0) {
 					// reset layers of current slide
@@ -224,7 +228,11 @@ var Slides = (function() {
 				chooseSlide();
 				current.status = 'fadeIn';
 			}
-			animationLoop(); 
+			if (current.status == 'fadeOut')
+				current.fadesLeft = 1;
+
+			var evt = new Event('manual-loop');
+			if (current.handleAnimStart) onAnimationStart(); else animationLoop(evt); 
 		},
 
 		start: function(args) {
@@ -234,7 +242,10 @@ var Slides = (function() {
 			if (args.defaultDelay) dflt.delay = args.defaultDelay;
 
 			// stack & hide all layers
-			collectionForEach(document.getElementsByTagName('layer'), function(l, num) { l.style.zIndex = num + 1;  });
+			collectionForEach(document.getElementsByTagName('layer'), function(l, num) { 
+				l.style.zIndex = num + 1;  
+				l.style.opacity=0;
+			});
 
 			// build SlideList
 			collectionForEach(document.getElementsByTagName('slide'), function (s,sNum) {
@@ -248,9 +259,13 @@ var Slides = (function() {
 				var replaceFromList = Array(), replaceToList = Array();
 				collectionForEach(s.getElementsByTagName('layer'), function(l,lNum) {
 
+					var canMulti = true;
 					plugins.forEach(function(p, pluginN) {						
 						if (p.canEdit(l)){
 							p.process(l);
+
+							if (p.canMulti && ! p.canMulti(l))
+								canMulti = false;
 						}
 					});
 
@@ -258,6 +273,7 @@ var Slides = (function() {
 						obj: l,
 						num: lNum,
 						defaultClass: l.classList.toString(),
+						canMulti: canMulti,
 						delay: l.style.animationDelay ? l.style.animationDelay : (lNum == 0 ? '' : dflt.delay),
 						animClass: l.dataset['anim'] || dflt.transition,
 					});
