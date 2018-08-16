@@ -1,6 +1,5 @@
 
 @import url('animate.min.css');
-@import url('https://fonts.googleapis.com/css?family=Lobster');  /* TODO - fix this */
 
 
 body {
@@ -35,7 +34,7 @@ slide layer.bkg  img {
 layer h1,p,span {
 	color: white;
 	font-size: 72px;
-	font-family: 'Lobster',sans-serif;
+	font-family: Helvetica,Arial,sans-serif;
 	margin-top: 0;
 	margin-bottom: 0;
 }

@@ -1,12 +1,9 @@
-	var SlideList = Array();
-	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s' };
-	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false };
-
 var Slides = (function() {
 	'use strict';
 
-
-
+	var SlideList = Array(),SponsorSlideList = Array();
+	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s', sponsorDelay: '5' };
+	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false };
 
 	/** plugins **/
 
@@ -253,8 +250,12 @@ var Slides = (function() {
 				var addMe = {
 					obj: s,
 					num: sNum,
-					LayerList: Array()
+					LayerList: Array(),
+					isSponsor: false
 				};
+
+				if (s.classList.contains('sponsor'))
+					addMe.isSponsor = true;
 
 				var replaceFromList = Array(), replaceToList = Array();
 				collectionForEach(s.getElementsByTagName('layer'), function(l,lNum) {
@@ -279,7 +280,11 @@ var Slides = (function() {
 					});
 				});
 
-				SlideList[sNum] = addMe;
+				// SlideList[sNum] = addMe;
+				if (addMe.isSponsor)
+					SponsorSlideList.push(addMe);
+				else
+					SlideList.push(addMe);
 
 			}); // forEach slide
 
