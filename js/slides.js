@@ -3,7 +3,7 @@ var Slides = (function() {
 
 	var SlideList = Array();
 	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s' };
-	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0 };
+	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false };
 
 
 
@@ -24,9 +24,11 @@ var Slides = (function() {
 						var plist = div.getElementsByTagName('p');
 						collectionForEach(plist, function(para) { 
 							para.classList.add('split-item'); 
-							para.dataset['anim'] = layer.dataset['anim'] || dflt.transition; 
+							var thisClass = layer.dataset['anim'] || dflt.transition;
+							para.dataset['anim'] = thisClass; 
+							para.classList.add(thisClass);
 							if (! para.style.animationDuration) para.style.animationDuration=dflt.length;
-							para.style.opacity=0; 
+
 						});
 					});
 				}
@@ -41,7 +43,7 @@ var Slides = (function() {
 							t.split('').forEach(function(ch) { 
 								innerHtml += '<span class="split-item" data-anim="'+ 
 								(span.dataset['anim'] || dflt.transition) + 
-								'" style="animation-duration: 0.3s; animation-delay: 0s;">'+
+								'" style="display: block; animation-duration: 0.3s; animation-delay: 0s;">'+
 								ch+
 								'</span>'; });
 							para.innerHTML = innerHtml;
@@ -52,6 +54,7 @@ var Slides = (function() {
 				if (splitWord.length > 0) {
 					processed = true;
 					collectionForEach(splitWord, function(span) {
+						span.style.opacity=1;
 						var plist = span.getElementsByTagName('p');
 						collectionForEach(plist, function(para) {
 							var t = para.innerText;
@@ -59,7 +62,7 @@ var Slides = (function() {
 							t.split(' ').forEach(function(ch) { 
 								innerHtml += '<span class="split-item" data-anim="'+ 
 								(span.dataset['anim'] || dflt.transition) + 
-								'" style="animation-duration: 0.5s; animation-delay: 0s;">'+
+								'" style="opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
 								ch+
 								'</span> '; });
 							para.innerHTML = innerHtml;
@@ -68,12 +71,17 @@ var Slides = (function() {
 				}
 				if (processed) { layer.style.opacity=1; layer.style.animationDelay='0s'; layer.style.transitionDelay='0s'; }
 			},
-			preCheck: function(layer) {
+			preCheck: function(layer, event) {
 				var retval = false;
+
+				current.handleAnimStart = false; // if we don't update any nodes in this function, we can go back to normal processing
+
 				var possibles = layer.getElementsByClassName('split-item');
 				if (possibles.length > 0) {
 					collectionForEach(possibles, function(node,num) {
 						if (! node.classList.contains('animated') && retval == false) {
+							current.handleAnimStart = true;
+							node.style.opacity=1;
 							node.className = 'split-item ' + (node.dataset['anim'] || dflt.transition) + ' animated';
 							retval = true;
 
@@ -82,15 +90,16 @@ var Slides = (function() {
 							}
 						}
 					});
-
 					return retval;
-					// FIXME - once all items have been handled here, we should just move on to the next layer, instead of working with this one
 				}
 			},
 			fadeOut: function(layer) {
 				collectionForEach(layer.getElementsByClassName('split-item'), function(node,num) {
 					node.className = 'split-item';
-					layer.style.opacity=1; layer.style.animationDelay='0s'; layer.style.transitionDelay='0s';
+					node.style.opacity=0;
+					layer.style.animationDelay='0s'; 
+					layer.style.transitionDelay='0s';
+					layer.style.opacity=1;
 				});
 			}
 		};
@@ -105,6 +114,18 @@ var Slides = (function() {
 			}
 		};
 	})());
+
+
+	function findParent(node,tagName) {
+		var retval = null;
+		while (node) {
+			if (node.getParent.tagName == tagName)
+				return node.getParent;
+			else
+				node = node.getParent;
+		}
+		return null;
+	}
 
 	function chooseSlide() {
 		if (current.Slide) {
@@ -121,11 +142,32 @@ var Slides = (function() {
 	}
 
 
+	// onAnimationStart() is useful for handling animations that should be running at roughly the same time
+	function onAnimationStart() {
+		var evt;
+		if (arguments.length >= 1)
+			evt = arguments[0];
+
+		if (current.handleAnimStart) {
+			// handle the start
+			for (var iter = 0; iter < plugins.length; ++iter)
+				if (plugins[iter].preCheck) {
+					var retval = plugins[iter].preCheck(current.Layer.obj, evt);
+					if (retval) {
+						return;
+					}
+				}
+		}
+	}
+
 	function animationLoop() {
 		var evt;
 		if (arguments.length >= 1)
 			evt = arguments[0];
 
+		if (current.handleAnimStart) { // events being handled on the 'animationstart' event
+			return;
+		}
 
 		if (current.status == 'fadeIn') {  // fading in all layers			
 			if (current.layerPtr < current.Slide.LayerList.length) {
@@ -134,20 +176,19 @@ var Slides = (function() {
 
 				for (var iter = 0; iter < plugins.length; ++iter)
 					if (plugins[iter].preCheck) {
-						var retval = plugins[iter].preCheck(thisL);
+						var retval = plugins[iter].preCheck(thisL, evt);
 						if (retval) {
 							return;
 						}
 					}
 				
 				if (current.Layer.delay && ! thisL.style.animationDelay) thisL.style.animationDelay = current.Layer.delay;
-				thisL.style.opacity = 1;
 				thisL.className = current.Layer.defaultClass + ' ' + (current.Layer.animClass || dflt.transition) + ' animated';
+				thisL.style.opacity=1;
 				++current.layerPtr;
 			}  else {
 				current.Slide.LayerList.forEach(function(l,lNum) {
 					l.obj.className = l.defaultClass + ' fadeOut animated';
-					// collectionForEach(l.obj.getElementsByClassName('split-item'), function(item) { item.className='split-item'; });
 					l.obj.style.animationDelay = dflt.delay;
 				});
 				current.status = 'fadeOut';
@@ -160,9 +201,8 @@ var Slides = (function() {
 					// reset layers of current slide
 					current.Slide.LayerList.forEach(function(l,lNum) {
 						l.obj.className = l.defaultClass;
-						l.obj.style.opacity = 0;
 						l.obj.style.animationDelay = l.delay;
-
+						l.obj.style.opacity=0;
 						for (var iter=0; iter < plugins.length; ++iter)
 							if (plugins[iter].fadeOut)
 								plugins[iter].fadeOut(l.obj);
@@ -194,7 +234,7 @@ var Slides = (function() {
 			if (args.defaultDelay) dflt.delay = args.defaultDelay;
 
 			// stack & hide all layers
-			collectionForEach(document.getElementsByTagName('layer'), function(l, num) { l.style.zIndex = num + 1; l.style.opacity = 0;  });
+			collectionForEach(document.getElementsByTagName('layer'), function(l, num) { l.style.zIndex = num + 1;  });
 
 			// build SlideList
 			collectionForEach(document.getElementsByTagName('slide'), function (s,sNum) {
@@ -231,7 +271,6 @@ var Slides = (function() {
 			if (! document.getElementsByClassName('pause-layer').length) {
 				var b = document.getElementsByTagName('body')[0];
 				var newLayer = document.createElement('layer');
-				newLayer.innerHTML = '<span class="fas fa-pausecircle"></span>'
 				newLayer.className = 'pauseLayer';
 				b.appendChild(newLayer);
 			}
@@ -239,7 +278,7 @@ var Slides = (function() {
 			if (! args.debug) {
 
 				chooseSlide();
-				window.addEventListener('animationstart', function(evt) { console.log('animationstart'); console.log(evt); });
+				window.addEventListener('animationstart', onAnimationStart );
 				window.addEventListener('animationend', animationLoop);
 				current.status='fadeIn';
 				setTimeout(animationLoop, 10);

@@ -21,6 +21,7 @@ slide layer {
 	top: 0;
 	width: 100%;
 	text-align: center;
+	animation-fill-mode: both;
 }
 
 slide layer.bkg  img {
@@ -39,7 +40,7 @@ layer h1,p,span {
 	margin-bottom: 0;
 }
 
-.split-item { opacity: 0; }
+.split-item { animation-fill-mode: both; }
 
 .noDelay { animation-delay: 0.1s; transition-delay: 0.1s; }
 
