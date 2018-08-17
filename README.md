@@ -7,7 +7,7 @@ This small piece of HTML and JavaScript was written for a slide show before the 
 * can be loaded locally (no external dependents, so no internet/wifi connection needed to run)
 * uses [animate.css](https://github.com/daneden/animate.css/) for animations
 * allows for limited control of randomness in choosing slides
-* allows for "sponsor slides" to be inserted every N slides (*TODO*)
+* allows for "sponsor slides" to be inserted every N slides
 
 ## Background
 
@@ -25,7 +25,7 @@ This section is just a collection of design decisions that were made during the 
 
 ### Slides object
 
-Inside the file `js/slides.js` is a defined object called **Slides.** There are only 2 public methods on this object: `start` (which you will see below); and `loop`, which allows you to manually advance the animation loop when in debuc mode (again, see below).
+Inside the file `js/slides.js` is a defined object called **Slides.** There are only 2 public methods on this object: `start` (which you will see below); and `loop`, which allows you to manually advance the animation loop when in debug mode (again, see below).
 
 ### Starting the slideshow
 
@@ -54,10 +54,18 @@ Slides are pushed onto a JavaScript Array in the order that they are defined. Wh
 
 So if **N=1** then the slides will be displayed in definition order with no randomness (the very first value of the array will be chosen each time). If **N=2** then there will be a little bit of randomness in the display of slides (a random choice between the first 2 slides of the array). If **N=S-1** where **S** is the number of defined slides, then the next slide will be anything except the previous slide (which is at the end of the array at that time). If **N=S** then any slide could be chosen next, including the previous slide.
 
+
+## Sponsor slides
+
+If a slide is tagged with the class `sponsor,` then it is considered a slide that should be shown often. This is to allow for slides that advertise the event being shown, the venue, or any other specific details you want to appear often.
+
+You can specify a value in the `Slides.start` config named **sponsorDelay** which indicates how many regular/non-sponsor slides should be shown before one from the sponsor list is shown. The default value is 5 regular slides between every sponsor slide.
+
+If multiple sponsor slides are defined, then they will be displayed in the order they appear in the file. They are not randomized. However, this may change in the future.
+
 ## TODO list
 
 * click or press a key to pause the slide show
-* "sponsor slides" implementation
 * advanced transitions
 * possible customization of "slide fade out" transition
 

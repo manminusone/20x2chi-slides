@@ -3,7 +3,7 @@ var Slides = (function() {
 
 	var SlideList = Array(),SponsorSlideList = Array();
 	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s', sponsorDelay: '5' };
-	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false };
+	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false, slideCount: 0 };
 
 	/** plugins **/
 
@@ -129,11 +129,22 @@ var Slides = (function() {
 	}
 
 	function chooseSlide() {
+
 		if (current.Slide) {
-			SlideList.push(current.Slide);
+			if (current.Slide.isSponsor) {
+				SponsorSlideList.push(current.Slide);
+				current.slideCount = 0;
+			} else {
+				SlideList.push(current.Slide);
+				++current.slideCount;
+			}
 			current.Slide = '';
 		}
-		current.Slide = SlideList.splice(Math.floor(Math.random() * Math.floor(dflt.choiceSize)), 1)[0]
+		if (SponsorSlideList.length > 0 && current.slideCount >= dflt.sponsorDelay)
+			current.Slide = SponsorSlideList.shift();
+		else
+			current.Slide = SlideList.splice(Math.floor(Math.random() * Math.floor(dflt.choiceSize)), 1)[0]
+
 		current.layerPtr = 0;
 	}
 

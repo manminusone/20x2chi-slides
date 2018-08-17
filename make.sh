@@ -39,6 +39,14 @@ else
 		cp index.html dist/
 		cp -R css/ dist/
 		cp -R js/ dist/
+		if [ -d "img" ];
+		then
+			cp -R img/ dist/
+		fi
+		if [ -d "images" ];
+		then
+			cp -R images/ dist/
+		fi
 		echo "Done. Don't forget to check the css files for any external font files that might be used!"
 	fi
 fi
