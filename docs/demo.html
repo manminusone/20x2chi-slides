@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="slides.min.css">
+	<script src="slides.min.js"></script>
+</head>
+<body>
+	<slide>
+		<layer class="bkg"><img src="http://via.placeholder.com/800x600/3ff/000.png"></layer>
+		<layer class="gridded">
+			<span class="footer">
+				<p> This is slide #1 in the list. </p>
+				<p> The background image is via placeholder.com. </p>
+			</span>
+		</layer>
+	</slide>
+
+	<slide>
+		<layer class="gridded">
+			<span class="header"> <p> This slide is all text. This is in the header.</p> </span>
+		</layer>
+		<layer class="gridded">
+			<span class="footer">
+				<p> This text is in the footer. </p>
+			</span>
+		</layer>
+	</slide>
+
+	<slide>
+		<layer class="bkg"><img src="http://via.placeholder.com/800x600/33f/ccc.png"></layer>
+		<layer class="gridded">
+			<span class="quote-right">
+				<p> "These images are just placeholders" </p>
+			</span>
+		</layer>
+	</slide>
+
+	<slide class="sponsor">
+		<layer class="gridded">
+			<span class="middler">
+				<p>While this slide is in the middle of the list, it's a "sponsor" slide, which means it will show up every few slides. </p>
+			</span>
+		</layer>
+	</slide>
+
+	<slide>
+		<layer class="bkg"><img src="http://via.placeholder.com/800x600/333/933.png"></layer>
+		<layer class="gridded">
+			<span class="quote-right split-p">
+				<p>This slide...</p>
+				<p> ...shows paragraphs...</p>
+				<p>...one at a time.</p>
+			</span>
+		</layer>
+	</slide>
+	<slide>
+		<layer class="gridded">
+			<span class="middler split-char">
+				<p> And this slide splits a paragraph up by characters and shows them one by one.</p>
+			</span>
+		</layer>
+	</slide>
+
+	<slide>
+		<layer class="bkg" data-anim="flipInX"><img src="http://via.placeholder.com/800x600/ccc/000.png"></layer>
+		<layer class="gridded">
+			<span class="middler" data-anim="zoomIn">
+			<p> You have the power of Animate.CSS, so you can use different types of transitions! </p>
+			</span>
+		</layer>
+	</slide>
+	<slide class="sponsor">
+		<layer class="gridded">
+			<span class="middler split-p">
+				<p> This is another "sponsor" slide. </p>
+				<p> You can have it be anything you want. </p>
+				<p> Text, graphics, or combination of both. </p>
+				<p> I thought you would want to know. </p>
+			</span>
+		</layer>
+		<layer class="gridded">
+			<span class="footer">
+				<p> You see? </p>
+			</span>
+		</layer>
+	</slide>
+	<slide>
+		<layer class="bkg"><img src="http://via.placeholder.com/800x600/3c3/ccc.png"></layer>
+		<layer class="gridded">
+			<span class="middler">
+				<p> So the majority of layout that I have implemented so far is on a grid system. </p>
+			</span>
+		</layer>
+		<layer class="gridded">
+			<span class="footer">
+				<p> There are headers, footers, "middlers," and two areas for quotations. </p>
+			</span>
+		</layer>
+	</slide>
+	<slide>
+		<layer class="bkg"><img src="http://via.placeholder.com/800x600/666/060.png"></layer>
+		<layer class="gridded">
+			<span class="middler">
+				<p> This is the final slide. Now we go back to the beginning. </p>
+			</span>
+		</layer>
+	</slide>
+
+	<script language="JavaScript">
+		Slides.start({
+			defaultTransition: 'fadeIn',
+			defaultLength: '1s',
+			defaultDelay: '3s',
+			choiceSize: 1,
+			debug: false
+		});
+	</script>
+</body>
+</html>

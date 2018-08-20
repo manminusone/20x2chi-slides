@@ -10,13 +10,20 @@
 			font-family:  'Open Sans',Arial,Helvetica,sans-serif; 
 			padding-left: 5em; 
 			padding-right: 5em; 
-			font-size: larger;
+
 		}
 		a:link { color: #fff; }
 		a:hover { color: #f00; }
 		a:visited { color: #fff; }
 
-		button { background: #000; color: #fff; border-radius: 10px; font-size: 2em; padding: 8px 32px; }
+		button { background: #000; color: #fff; border-radius: 3px; font-size: 1em; padding: 8px 32px; }
+
+		@media only screen and (min-width: 768px) {
+			body { font-size: larger; }
+			button { background: #000; color: #fff; border-radius: 10px; font-size: 2em; padding: 8px 32px; }
+
+		}
+
 
 	</style>
 </head>
@@ -27,13 +34,24 @@
 		<h1> 20x2Chi Slides </h1>
 	</div>
 
-	<p> This site is a project to put together an animated slide show to be displayed at the <a href="http://20x2chi.org/">20x2 Chicago</a> series of shows. The HTML and JavaScript files being used here are available for your use at Github: <a href="https://github.com/manminusone/20x2chi-slides">github.com/manminusone/20x2chi-slides</a> </p>
+	<p> This site is a project to put together an animated slide show to be displayed at the <a href="http://20x2chi.org/">20x2 Chicago</a> series of shows. The HTML and JavaScript files being used here are available for your use <a href="https://github.com/manminusone/20x2chi-slides">at Github.</a> </p>
 
-	<p> All photos displayed on this site are taken from my Flickr page at <a href="https://flickr.com/jima">https://flickr.com/jima</a>.  </p>
+	<p> Features of this slide show framework:
+
+		<ul>
+			<li> Images can be displayed with arbitrary text and graphics as overlays. </li>
+			<li> I use <a href="https://daneden.github.io/animate.css/">Animate.css</a> for transitions, so this project already has several animation options out of the box. </li>
+			<li> You have some control over the randomness in choosing the next slide to display. </li>
+			<li> You can mark certain slides as "sponsor slides," so that they are shown more often (useful to advertise events, the venue, general information, etc.) </li>
+		</ul>
+	</p>
+
 
 	<p> &nbsp; </p>
-	<p style="text-align: center">  <button onClick="window.open('index.html','_blank','width='+screen.width+',height='+screen.height+',top=0,left=0,menubar=no,toolbar=no,location=nopersonalbar=no,status=no'); return false;"> Start the show! </button> </p>
+	<p> If you want to see a sample slide show, just click the button and away we go! </p>
+	<p style="text-align: center">  <button onClick="window.open('demo.html','_blank','width='+screen.width+',height='+screen.height+',top=0,left=0,menubar=no,toolbar=no,location=nopersonalbar=no,status=no'); return false;"> Start the show! </button> </p>
 
+	<p> This site was created by <a href="http://www.empty-handed.com/"">James Allenspach</a> for <a href="http://20x2chicago.org/">20x2 Chicago.</a> 
 
 </body>
 </html>

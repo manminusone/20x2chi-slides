@@ -36,16 +36,29 @@ var Slides = (function() {
 				if (splitChar.length > 0) {
 					processed = true;
 					collectionForEach(splitChar, function(span) {
+						span.style.opacity=1
 						var plist = span.getElementsByTagName('p');
 						collectionForEach(plist, function(para) {
 							var t = para.innerText;
 							var innerHtml = '';
+
+							// the char spans were not breaking along natural word breaks, so this wordBreak logic is an attempt to fix that
+							var wordBreak = true;
 							t.split('').forEach(function(ch) { 
+								if (wordBreak) {
+									innerHtml += '<span style="display: inline-block">';
+									wordBreak = false;
+								}
 								innerHtml += '<span class="split-item" data-anim="'+ 
 								(span.dataset['anim'] || dflt.transition) + 
-								'" style="display: block; animation-duration: 0.3s; animation-delay: 0s;">'+
-								ch+
-								'</span>'; });
+								'" style="opacity: 0; display: inline-block; animation-duration: 0.3s; animation-delay: 0s;">'+
+								(ch == ' ' ? '&nbsp;' : ch) +
+								'</span>'; 
+								if (ch == ' ') {
+									innerHtml += '</span>'
+									wordBreak = true;
+								}
+							});
 							para.innerHTML = innerHtml;
 						});
 					})
@@ -62,7 +75,7 @@ var Slides = (function() {
 							t.split(' ').forEach(function(ch) { 
 								innerHtml += '<span class="split-item" data-anim="'+ 
 								(span.dataset['anim'] || dflt.transition) + 
-								'" style="opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
+								'" style="opacity: 0; display: inline; animation-duration: 2s; animation-delay: 0.2s;">'+
 								ch+
 								'</span> '; });
 							para.innerHTML = innerHtml;

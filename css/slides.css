@@ -54,6 +54,12 @@ layer h1,p,span {
 	color: #ccc;
 }
 
+
+@keyframes wipeLeft {
+	from {
+		
+	}
+}
 /* grid stuff */
 
 .gridded {
