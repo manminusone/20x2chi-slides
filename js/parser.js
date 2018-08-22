@@ -7,6 +7,10 @@ contents	=> tag |
 			|  tag "("  key "=" value ")"
 			|  tag "("  string-def ")"
 			| "[" contents [ "," contents ] * "]"
+
+
+slide.[layer(bkg).img(src="slides/${data.image}"), layer(gridded).span(footer).[p("${data.name"), p("${data.label}")]]
+
 */
 
 var Parser = (function() {
