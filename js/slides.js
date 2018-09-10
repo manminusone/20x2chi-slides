@@ -153,7 +153,8 @@ var Slides = (function() {
 			}
 			current.Slide = '';
 		}
-		if (SponsorSlideList.length > 0 && current.slideCount >= dflt.sponsorDelay)
+		// it's possible that there are no slides in SlideList
+		if (SponsorSlideList.length > 0 && (SlideList.length == 0 || current.slideCount >= dflt.sponsorDelay))
 			current.Slide = SponsorSlideList.shift();
 		else
 			current.Slide = SlideList.splice(Math.floor(Math.random() * Math.floor(dflt.choiceSize)), 1)[0]
