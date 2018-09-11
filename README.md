@@ -23,7 +23,7 @@ When you've got a slide show working, you can then execute the **make.sh** comma
 
 ### General slide HTML format
 
-Each slide consists of one or more layers, each of which are displayed one at a time. Each layer has an integer **z-index** value that increases  When all layers have been displayed, the whole slide fades out, and the program moves on to the next slide.
+Each slide consists of one or more layers, each of which are displayed one at a time. Each layer has an integer **z-index** value such that every successive layer is over the previous one(s). When all layers have been displayed, the whole slide fades out, and the program moves on to the next slide.
 
 An example slide might look like this:
 
