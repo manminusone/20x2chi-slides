@@ -24,7 +24,7 @@ var Slides = (function() {
 						collectionForEach(plist, function(para) { 
 							para.classList.add('split-item'); 
 							var thisClass = layer.dataset['anim'] || dflt.transition;
-							para.dataset['anim'] = thisClass; 
+							para.dataset['anim'] = para.dataset['anim'] || thisClass; 
 							para.style.opacity=0;
 							// para.classList.add(thisClass);
 							if (! para.style.animationDuration) para.style.animationDuration=dflt.length;
