@@ -30,15 +30,22 @@ slide layer.bkg  img {
 	margin-right: auto;
 }
 
+h1,p,span {
+	margin-top: 0;
+	margin-bottom: 0;
+	line-height: 1em;
+}
 
-layer h1,p,span {
+slide layer {
 	color: white;
 	font-size: 72px;
 	font-family: Helvetica,Arial,sans-serif;
-	margin-top: 0;
-	margin-bottom: 0;
+	text-shadow: 1px 1px 2px black;
 }
 
+slide.sponsor layer {
+	font-family: 'Plantagenet Cherokee','Times New Roman','Times Roman',serif;
+}
 .split-item { animation-fill-mode: both; }
 
 .noDelay { animation-delay: 0.1s; transition-delay: 0.1s; }
