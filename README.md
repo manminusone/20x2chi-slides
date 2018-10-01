@@ -1,7 +1,7 @@
 # 20x2 Chicago Slide Show 
 This small piece of HTML and JavaScript was written for a slide show before the live lit show [20x2 Chicago.](https://20x2.org/chicago) It has a few unique features that I was unable to find in another slide show package.
 
-A full demo is accessible at the project site <a href="http://20x2chi.pics/">20x2chi.pics</a> (because ".slides" isn't a TLD yet).
+A full demo is accessible at the project site <a href="https://20x2chi.pics/">20x2chi.pics</a> (because ".slides" isn't a TLD yet).
 
 ## Features
 
