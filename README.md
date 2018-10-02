@@ -7,13 +7,14 @@ A full demo is accessible at the project site <a href="https://20x2chi.pics/">20
 
 * images are displayed with arbitrary animated text overlays
 * can be loaded locally (no external dependents, so no internet/wifi connection needed to run)
+* Web server not required (you can just load up your HTML page in a browser window and go)
 * uses [animate.css](https://github.com/daneden/animate.css/) for animations
 * allows for limited control of randomness in choosing slides
 * allows for "sponsor slides" to be inserted every N slides
 
 ## Background
 
-I was looking around for slideshow frameworks for displaying images before 20x2 Chicago shows, but I couldn't find one that specifically addressed what I wanted: a basic slideshow framework that allowed for arbitrary text & graphics to be layered on top of images, and for those slides to be randomly cycled. Since it (at first) looked like a simple project I started rolling my own slideshow code. Two months and 3 major versions later, here's what I have.
+I was looking around at slideshow frameworks for displaying images before 20x2 Chicago shows, but I couldn't find one that specifically addressed what I wanted: a basic slideshow framework that allowed for arbitrary text & graphics to be layered on top of images, did not need to be hosted on a server (i.e., no Node.js solutions), could be loaded up locally in a browser window without any external dependencies (I could not rely on wi-fi being available at our venues), and for those slides to be randomly cycled. Since it (at first) looked like a simple project I started rolling my own slideshow code. Two months and 3 major versions later, here's what I have.
 
 ## Usage
 
@@ -87,6 +88,7 @@ At the bottom of the **index.html** page you will see this JavaScript block that
 ```
 
 * **defaultTransition, defaultLength** and **defaultDelay** are applied to any layers that do not have these values already applied to them. (See code for examples.)
+* **defaultTransition** is an appropriate animate.css class to use for the "fade-in" transition, **defaultLength** is used for the `animationDuration` of each layer, and **defaultDelay** is used for `animationDelay`.
 * **choiceSize** indicates how large the pool of prospective slides is when choosing the next slide (see choosing note below).
 * **debug** is a value that, when `true,` stops code execution just after everything has been set up, allowing you to examine the elements and execute arbitrary code against the Slides object. If you want to step through the animation loops, you can execute the function `Slides.loop()` in your developer's console.
 
