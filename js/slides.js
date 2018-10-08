@@ -313,7 +313,8 @@ var Slides = (function() {
 
 			}); // forEach slide
 
-			var b = document.getElementsByTagName('body')[0], paused = false;
+			var b = document.getElementsByTagName('body')[0], paused = false, vert = false, vertScale = 1.0;
+			var svg = null, txt = null;
 			b.addEventListener('keydown', (evt) => {
 				const keyName = evt.key;
 				if (keyName == ' '){
@@ -323,6 +324,49 @@ var Slides = (function() {
 					collectionForEach(document.getElementsByTagName('span'),  toggleFn);
 					collectionForEach(document.getElementsByTagName('p'),     toggleFn);
 					paused = ! paused;
+				} else if (keyName == 'v' || keyName == 'V') {
+					if (! vert) {
+						svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+						txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+						txt.setAttribute('x', 10);
+						txt.setAttribute('y', 250);
+						txt.setAttribute('fill', '#fff');
+						txt.style.fontSize = '20vh';
+						txt.style.fontFamily = 'monospace';
+						txt.innerHTML = vertScale.toFixed(2) + 'x';
+						svg.appendChild(txt);
+
+						var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+						rect.setAttribute('x', 0);
+						rect.setAttribute('y', 0);
+						rect.setAttribute('width', 500);
+						rect.setAttribute('height', 500);
+						rect.setAttribute('stroke','#fff');
+						rect.setAttribute('stroke-width', 10);
+						rect.setAttribute('fill-opacity', 0);
+
+						svg.style.zIndex=10000;
+						svg.style.position = 'absolute';
+						svg.style.left = 100;
+						svg.style.top = 100;
+						svg.setAttribute('width', 500);
+						svg.setAttribute('height', 500);
+						svg.appendChild(rect);
+						document.body.appendChild(svg);
+						vert = true;
+					} else {
+						svg.parentNode.removeChild(svg);
+						svg = null;
+						vert = false;
+					}
+				} else if (keyName == 'ArrowDown' && vert) {
+					if (vertScale > 0.5) vertScale -= 0.01;
+					b.style.transform  = 'scaleY('+vertScale+')';
+					txt.innerHTML = vertScale.toFixed(2) + 'x';
+				} else if (keyName == 'ArrowUp' && vert) {
+					if (vertScale < 1.0) vertScale += 0.01;
+					b.style.transform  = 'scaleY('+vertScale+')';
+					txt.innerHTML = vertScale.toFixed(2) + 'x';
 				}
 			});
 
