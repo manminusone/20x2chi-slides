@@ -21,6 +21,12 @@ Once you've cloned this repository, run the Bash script file **make.sh** to copy
 
 When you've got a slide show working, you can then execute the **make.sh** command again with the single argument dist to create a complete distribution of the code in the **dist/** subdirectory. The script will also copy over any directories named **img/** or **images/**, assuming that's where you're storing your images. If that's not the name of your images directory, you should manually copy that directory.
 
+### Keyboard shortcuts
+
+Key   | Notes
+------|------
+Space | Pauses / resumes animations
+
 ### General slide HTML format
 
 Each slide consists of one or more layers, each of which are displayed one at a time. Each layer has an integer **z-index** value such that every successive layer is over the previous one(s). When all layers have been displayed, the whole slide fades out, and the program moves on to the next slide.
@@ -108,7 +114,6 @@ If multiple sponsor slides are defined, then they will be displayed in the order
 
 ## TODO list
 
-* click or press a key to pause the slide show
 * advanced transitions
 * possible customization of "slide fade out" transition
 

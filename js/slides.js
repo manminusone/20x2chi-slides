@@ -313,13 +313,18 @@ var Slides = (function() {
 
 			}); // forEach slide
 
-
-			if (! document.getElementsByClassName('pause-layer').length) {
-				var b = document.getElementsByTagName('body')[0];
-				var newLayer = document.createElement('layer');
-				newLayer.className = 'pauseLayer';
-				b.appendChild(newLayer);
-			}
+			var b = document.getElementsByTagName('body')[0], paused = false;
+			b.addEventListener('keydown', (evt) => {
+				const keyName = evt.key;
+				if (keyName == ' '){
+					// console.log('paused is',paused);
+					var toggleFn = function(x) { x.style.animationPlayState = (paused ? 'running' : 'paused'); };
+					collectionForEach(document.getElementsByTagName('layer'), toggleFn);
+					collectionForEach(document.getElementsByTagName('span'),  toggleFn);
+					collectionForEach(document.getElementsByTagName('p'),     toggleFn);
+					paused = ! paused;
+				}
+			});
 
 			if (! args.debug) {
 
