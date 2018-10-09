@@ -313,7 +313,7 @@ var Slides = (function() {
 
 			}); // forEach slide
 
-			var b = document.getElementsByTagName('body')[0], paused = false, vert = false, vertScale = 1.0;
+			var b = document.getElementsByTagName('body')[0], paused = false, showSquare = false, vertScale = 1.0, horiz = null, horizScale = 1.0;
 			var svg = null, txt = null;
 			b.addEventListener('keydown', (evt) => {
 				const keyName = evt.key;
@@ -325,15 +325,15 @@ var Slides = (function() {
 					collectionForEach(document.getElementsByTagName('p'),     toggleFn);
 					paused = ! paused;
 				} else if (keyName == 'v' || keyName == 'V') {
-					if (! vert) {
+					if (! showSquare) {
 						svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 						txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
 						txt.setAttribute('x', 10);
 						txt.setAttribute('y', 250);
 						txt.setAttribute('fill', '#fff');
-						txt.style.fontSize = '20vh';
+						txt.style.fontSize = '75px';
 						txt.style.fontFamily = 'monospace';
-						txt.innerHTML = vertScale.toFixed(2) + 'x';
+						txt.innerHTML = vertScale.toFixed(2) + 'x'+ horizScale.toFixed(2);
 						svg.appendChild(txt);
 
 						var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
@@ -353,20 +353,28 @@ var Slides = (function() {
 						svg.setAttribute('height', 500);
 						svg.appendChild(rect);
 						document.body.appendChild(svg);
-						vert = true;
+						showSquare = true;
 					} else {
 						svg.parentNode.removeChild(svg);
 						svg = null;
-						vert = false;
+						showSquare = false;
 					}
-				} else if (keyName == 'ArrowDown' && vert) {
+				} else if (keyName == 'ArrowDown' && showSquare) {
 					if (vertScale > 0.5) vertScale -= 0.01;
-					b.style.transform  = 'scaleY('+vertScale+')';
-					txt.innerHTML = vertScale.toFixed(2) + 'x';
-				} else if (keyName == 'ArrowUp' && vert) {
+					b.style.transform  = 'scaleX('+horizScale+') scaleY('+vertScale+')';
+					txt.innerHTML = vertScale.toFixed(2) + 'x'+ horizScale.toFixed(2);
+				} else if (keyName == 'ArrowUp' && showSquare) {
 					if (vertScale < 1.0) vertScale += 0.01;
-					b.style.transform  = 'scaleY('+vertScale+')';
-					txt.innerHTML = vertScale.toFixed(2) + 'x';
+					b.style.transform  = 'scaleX('+horizScale+') scaleY('+vertScale+')';
+					txt.innerHTML = vertScale.toFixed(2) + 'x'+ horizScale.toFixed(2);
+				} else if (keyName == 'ArrowLeft' && showSquare) {
+					if (horizScale > 0.5) horizScale -= 0.01;
+					b.style.transform  = 'scaleX('+horizScale+') scaleY('+vertScale+')';
+					txt.innerHTML = vertScale.toFixed(2) + 'x'+ horizScale.toFixed(2);
+				} else if (keyName == 'ArrowRight' && showSquare) {
+					if (horizScale < 1.0) horizScale += 0.01;
+					b.style.transform  = 'scaleX('+horizScale+') scaleY('+vertScale+')';
+					txt.innerHTML = vertScale.toFixed(2) + 'x'+ horizScale.toFixed(2);
 				}
 			});
 
