@@ -26,7 +26,8 @@ When you've got a slide show working, you can then execute the **make.sh** comma
 Key   | Notes
 ------|------
 Space | Pauses / resumes animations
-V     | Allows you to adjust the vertical scale, in cases where you are using a projector that isn't set up with a proper aspect ratio. Once the reference square is on the screen, use Up and Down arrow keys to adjust the scale, and press V again to hide the square.
+V     | Allows you to adjust the vertical and horizontal scale, in cases where you are using a projector that isn't set up with a proper aspect ratio. Once the reference square is on the screen, use the arrow keys to adjust the scale, and press V again to hide the square.
+B     | Allows you to adjust the vertical and horizontal translation, in the same way you can adjust the scale. The arrow keys will add or subtract pixels to the translation, and pressing B again will hide the reference square.
 
 ### General slide HTML format
 
