@@ -70,6 +70,44 @@ quote-right | Rows 2 through 4, cells 3 through 5
 
 The **quote-left** and **quote-right** classes are used as places for pullquotes. Note that the two classes overlap (both using column 3), so you probably don't want to use both in the same slide.
 
+### Split spans
+
+As part of the gridded layers, I have created some code & a few classes to create what I call "split spans," which are span tags that allow you to animate text inside a span. The code does this by splitting up text within a given span to have separate animation triggers. Below are the descriptions of the split span classes; these classes go on the span with the content that you want to animate.
+
+The **split-p** class can be used to animate paragraphs within a span so that one paragraph at a time shows up. Make your layer look like this:
+
+```
+    <layer class="gridded">
+        <span class="quote-right split-p">
+            <p> These paragraphs ... </p>
+            <p> ... are displayed ... </p>
+            <p> ... one after the other ... </p>
+            <p> ... with some time delay. </p>
+        </span>
+    </layer>
+```
+
+The **split-word** class works on paragraphs within the span, and displays one word at a time.
+
+```
+    <layer class="gridded">
+        <span class="quote-right split-word">
+            <p> This sentence will be displayed one word at a time. </p>
+        </span>
+    </layer>
+```
+
+And the **split-char** class will animate a paragraph one character at a time.
+
+```
+    <layer class="gridded">
+        <span class="quote-right split-char">
+            <p> Character by character, this paragraph will show itself. </p>
+        </span>
+    </layer>
+```
+
+
 ## Design
 
 This section is just a collection of design decisions that were made during the creation of this code. If you want to make your own revisions or code changes, you will find this content helpful.
