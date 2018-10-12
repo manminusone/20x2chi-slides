@@ -11,6 +11,8 @@ A full demo is accessible at the project site <a href="http://20x2chi.pics/">20x
 * allows for limited control of randomness in choosing slides
 * allows for "sponsor slides" to be inserted every N slides
 
+I have also included a small utility that can scale and translate the slides, in cases where the slides are being projected in an incorrect aspect ratio.
+
 ## Background
 
 I was looking around for slideshow frameworks for displaying images before 20x2 Chicago shows, but I couldn't find one that specifically addressed what I wanted: a basic slideshow framework that allowed for arbitrary text & graphics to be layered on top of images, and for those slides to be randomly cycled. Since it (at first) looked like a simple project I started rolling my own slideshow code. Two months and 3 major versions later, here's what I have.
@@ -156,6 +158,7 @@ If multiple sponsor slides are defined, then they will be displayed in the order
 
 * advanced transitions
 * possible customization of "slide fade out" transition
+* move the scale/translate utility code into a separate library 
 
 
 ## Disclaimer
