@@ -64,18 +64,22 @@ var Slides = (function() {
 					})
 				}
 				var splitWord = layer.getElementsByClassName('split-word');
+				var layerClass = layer.dataset['anim'] || dflt.transition;
 				if (splitWord.length > 0) {
 					processed = true;
 					collectionForEach(splitWord, function(span) {
+						var spanClass = span.dataset['anim'] || layerClass;
 						span.style.opacity=1;
 						var plist = span.getElementsByTagName('p');
 						collectionForEach(plist, function(para) {
 							var t = para.innerText;
+							var paraClass = para.dataset['anim'] || spanClass;
 							var innerHtml = '';
 							t.split(' ').forEach(function(ch) { 
 								innerHtml += '<span class="split-item" data-anim="'+ 
-								(span.dataset['anim'] || dflt.transition) + 
-								'" style="opacity: 0; display: inline; animation-duration: 2s; animation-delay: 0.2s;">'+
+								// (span.dataset['anim'] || dflt.transition) + 
+								paraClass + 
+								'" style="display: inline-block; opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
 								ch+
 								'</span> '; });
 							para.innerHTML = innerHtml;
@@ -312,14 +316,6 @@ var Slides = (function() {
 					SlideList.push(addMe);
 
 			}); // forEach slide
-
-
-			if (! document.getElementsByClassName('pause-layer').length) {
-				var b = document.getElementsByTagName('body')[0];
-				var newLayer = document.createElement('layer');
-				newLayer.className = 'pauseLayer';
-				b.appendChild(newLayer);
-			}
 
 			if (! args.debug) {
 

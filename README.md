@@ -12,6 +12,8 @@ A full demo is accessible at the project site [20x2chi.pics](https://20x2chi.pic
 * allows for limited control of randomness in choosing slides
 * allows for "sponsor slides" to be inserted every N slides
 
+I have also included **parc,** a small utility that can scale and translate the slides, in cases where the slides are being projected in an incorrect aspect ratio. More details on this utility available at [the GitHub page for that project.](https://github.com/manminusone/parc)
+
 ## Background
 
 I was looking around at slideshow frameworks for displaying images before 20x2 Chicago shows, but I couldn't find one that specifically addressed what I wanted: a basic slideshow framework that allowed for arbitrary text & graphics to be layered on top of images, did not need to be hosted on a server (i.e., no Node.js solutions), could be loaded up locally in a browser window without any external dependencies (I could not rely on wi-fi being available at our venues), and for those slides to be randomly cycled. Since it (at first) looked like a simple project I started rolling my own slideshow code. Two months and 3 major versions later, here's what I have.
@@ -21,6 +23,14 @@ I was looking around at slideshow frameworks for displaying images before 20x2 C
 Once you've cloned this repository, run the Bash script file **make.sh** to copy the appropriate CSS/font files from the linked repos to the CSS and JS subdirectories. Once that's done you can open up **index.html** in your browser to see some sample slides. 
 
 When you've got a slide show working, you can then execute the **make.sh** command again with the single argument dist to create a complete distribution of the code in the **dist/** subdirectory. The script will also copy over any directories named **img/** or **images/**, assuming that's where you're storing your images. If that's not the name of your images directory, you should manually copy that directory.
+
+### Keyboard shortcuts
+
+Key   | Notes
+------|------
+Space | Pauses / resumes animations
+
+You can also use the keys assigned to the **parc** utility to adjust the scale and offset of the HTML body. Press <kbd>V</kbd> to show a square for scaling, and <kbd>B</kbd> to display a square for offset. Use the arrow keys to adjust, and then press the <kbd>V</kbd> or <kbd>B</kbd> key to hide the square. Further information at [the GitHub page for parc.](https://github.com/manminusone/parc)
 
 ### General slide HTML format
 
@@ -62,6 +72,44 @@ quote-left | Rows 2 through 4, cells 1 through 3 (so 9 cells total)
 quote-right | Rows 2 through 4, cells 3 through 5
 
 The **quote-left** and **quote-right** classes are used as places for pullquotes. Note that the two classes overlap (both using column 3), so you probably don't want to use both in the same slide.
+
+### Split spans
+
+As part of the gridded layers, I have created some code & a few classes to create what I call "split spans," which are span tags that allow you to animate text inside a span. The code does this by splitting up text within a given span to have separate animation triggers. Below are the descriptions of the split span classes; these classes go on the span with the content that you want to animate.
+
+The **split-p** class can be used to animate paragraphs within a span so that one paragraph at a time shows up. Make your layer look like this:
+
+```
+    <layer class="gridded">
+        <span class="quote-right split-p">
+            <p> These paragraphs ... </p>
+            <p> ... are displayed ... </p>
+            <p> ... one after the other ... </p>
+            <p> ... with some time delay. </p>
+        </span>
+    </layer>
+```
+
+The **split-word** class works on paragraphs within the span, and displays one word at a time.
+
+```
+    <layer class="gridded">
+        <span class="quote-right split-word">
+            <p> This sentence will be displayed one word at a time. </p>
+        </span>
+    </layer>
+```
+
+And the **split-char** class will animate a paragraph one character at a time.
+
+```
+    <layer class="gridded">
+        <span class="quote-right split-char">
+            <p> Character by character, this paragraph will show itself. </p>
+        </span>
+    </layer>
+```
+
 
 ## Design
 
@@ -110,9 +158,9 @@ If multiple sponsor slides are defined, then they will be displayed in the order
 
 ## TODO list
 
-* click or press a key to pause the slide show
 * advanced transitions
 * possible customization of "slide fade out" transition
+* move the scale/translate utility code into a separate library 
 
 
 ## Disclaimer
