@@ -11,7 +11,7 @@ A full demo is accessible at the project site <a href="http://20x2chi.pics/">20x
 * allows for limited control of randomness in choosing slides
 * allows for "sponsor slides" to be inserted every N slides
 
-I have also included a small utility that can scale and translate the slides, in cases where the slides are being projected in an incorrect aspect ratio.
+I have also included **parc,** a small utility that can scale and translate the slides, in cases where the slides are being projected in an incorrect aspect ratio. More details on this utility available at [the GitHub page for that project.](https://github.com/manminusone/parc)
 
 ## Background
 
@@ -28,8 +28,8 @@ When you've got a slide show working, you can then execute the **make.sh** comma
 Key   | Notes
 ------|------
 Space | Pauses / resumes animations
-V     | Allows you to adjust the vertical and horizontal scale, in cases where you are using a projector that isn't set up with a proper aspect ratio. Once the reference square is on the screen, use the arrow keys to adjust the scale, and press V again to hide the square.
-B     | Allows you to adjust the vertical and horizontal translation, in the same way you can adjust the scale. The arrow keys will add or subtract pixels to the translation, and pressing B again will hide the reference square.
+
+You can also use the keys assigned to the **parc** utility to adjust the scale and offset of the HTML body. Press <kbd>V</kbd> to show a square for scaling, and <kbd>B</kbd> to display a square for offset. Use the arrow keys to adjust, and then press the <kbd>V</kbd> or <kbd>B</kbd> key to hide the square. Further information at [the GitHub page for parc.](https://github.com/manminusone/parc)
 
 ### General slide HTML format
 
