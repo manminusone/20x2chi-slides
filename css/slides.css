@@ -6,6 +6,7 @@ body {
 	background: #000;
 	margin: 0;
 	overflow: hidden;
+	cursor: none;
 }
 
 slide {
