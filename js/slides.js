@@ -317,6 +317,19 @@ var Slides = (function() {
 
 			}); // forEach slide
 
+			var b = document.getElementsByTagName('body')[0], paused = false;
+
+			b.addEventListener('keydown', (evt) => {
+				const keyName = evt.key;
+				if (keyName == ' ') {
+					var toggleFn = function(x) { x.style.animationPlayState = (paused ? 'running' : 'paused'); };
+					collectionForEach(document.getElementsByTagName('layer'), toggleFn);
+					collectionForEach(document.getElementsByTagName('span'),  toggleFn);
+					collectionForEach(document.getElementsByTagName('p'),     toggleFn);
+					paused = ! paused;
+				}
+			});
+
 			if (! args.debug) {
 
 				chooseSlide();
