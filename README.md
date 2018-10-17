@@ -141,7 +141,7 @@ At the bottom of the **index.html** page you will see this JavaScript block that
 
 ## Choosing the next slide
 
-Slides are pushed onto a JavaScript Array in the order that they are defined. When a slide is displayed, its value is `splice`d out of the array, and then `push`ed onto the end of the array when display is complete. The next slide is then chosen from the first **N** slides, where **N** is the value of **choiceSize** as defined above (the default value of **N** is 1). 
+Slides are `push`ed onto a JavaScript Array in the order that they are defined. When a slide is displayed, its value is `splice`d out of the array, and then `push`ed onto the end of the array when display is complete. The next slide is then randomly chosen from the first **N** slides, where **N** is the value of **choiceSize** as defined above (the default value of **N** is 1). 
 
 So if **N=1** then the slides will be displayed in definition order with no randomness (the very first value of the array will be chosen each time). If **N=2** then there will be a little bit of randomness in the display of slides (a random choice between the first 2 slides of the array). If **N=S-1** where **S** is the number of defined slides, then the next slide will be anything except the previous slide (which is at the end of the array at that time). If **N=S** then any slide could be chosen next, including the previous slide.
 
@@ -158,7 +158,6 @@ If multiple sponsor slides are defined, then they will be displayed in the order
 
 * advanced transitions
 * possible customization of "slide fade out" transition
-* move the scale/translate utility code into a separate library 
 
 
 ## Disclaimer
