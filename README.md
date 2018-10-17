@@ -55,7 +55,7 @@ An example slide might look like this:
 
 This slide has three layers. The first one is of class **bkg** which auto-sizes an image within the layer to be the full browser width/height. The second & third layer are of class **gridded** which imposes a 5-by-5 CSS grid structure on the layer. Within the gridded layer you include a `<span>` with an appropriate class to take advantage of the grid (see table of classes below). 
 
-Note that each layer is displayed with a pause afterward, to allow the viewer to read each layer's contents before the next one shows up. If you were to put all of the spans in a single layer, it would work, but everything would show up at once. So that's the thinking behind putting each thing in its own layer.
+Note that each layer is displayed with a pause afterward, to allow the viewer to read each layer's contents before the next one shows up. If you were to put all of the spans in a single layer, it would display properly, but everything would show up at once. So remember that the program pauses between layers, rather than between spans or paragraphs.
 
 
 ### Grid classes
