@@ -6,7 +6,8 @@ A full demo is accessible at the project site <a href="http://20x2chi.pics/">20x
 ## Features
 
 * images are displayed with arbitrary animated text overlays
-* can be loaded locally (no external dependents, so no internet/wifi connection needed to run)
+* simple HTML page (no Web or Node.js server required) so you can have a whole presentation on your local disk or on a USB thumb drive
+* all assets can be loaded locally (i.e., no external dependents, so no internet/wifi connection needed to run)
 * uses [animate.css](https://github.com/daneden/animate.css/) for animations
 * allows for limited control of randomness in choosing slides
 * allows for "sponsor slides" to be inserted every N slides

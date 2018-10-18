@@ -11,8 +11,11 @@ var Slides = (function() {
 	plugins.push((function() {
 		return {
 			name: 'split-span',
+			// canEdit = are there split-span elements in this layer ?
 			canEdit: function(layer) { return layer.getElementsByClassName('split-p').length + layer.getElementsByClassName('split-char').length + layer.getElementsByClassName('split-word').length; },
+			// canMulti = can we set up multiple animations at the same time? (only split-p can't do this)
 			canMulti: function(layer) { return (layer.getElementsByClassName('split-p').length == 0) },
+			// work on a single layer
 			process: function(layer) {
 				var processed = false;
 
