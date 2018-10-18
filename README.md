@@ -5,9 +5,9 @@ A full demo is accessible at the project site [20x2chi.pics](https://20x2chi.pic
 
 ## Features
 
+* simple HTML page (no Web or Node.js server required) so you can have a whole presentation on your local disk or on a USB thumb drive
 * images are displayed with arbitrary animated text overlays
-* can be loaded locally (no external dependents, so no internet/wifi connection needed to run)
-* Web server not required (you can just load up your HTML page in a browser window and go)
+* all assets can be loaded locally (i.e., no external dependents, so no internet/wifi connection needed to run)
 * uses [animate.css](https://github.com/daneden/animate.css/) for animations
 * allows for limited control of randomness in choosing slides
 * allows for "sponsor slides" to be inserted every N slides
@@ -56,7 +56,7 @@ An example slide might look like this:
 
 This slide has three layers. The first one is of class **bkg** which auto-sizes an image within the layer to be the full browser width/height. The second & third layer are of class **gridded** which imposes a 5-by-5 CSS grid structure on the layer. Within the gridded layer you include a `<span>` with an appropriate class to take advantage of the grid (see table of classes below). 
 
-Note that each layer is displayed with a pause afterward, to allow the viewer to read each layer's contents before the next one shows up. If you were to put all of the spans in a single layer, it would work, but everything would show up at once. So that's the thinking behind putting each thing in its own layer.
+Note that each layer is displayed with a pause afterward, to allow the viewer to read each layer's contents before the next one shows up. If you were to put all of the spans in a single layer, it would display properly, but everything would show up at once. So remember that the program pauses between layers, rather than between spans or paragraphs.
 
 
 ### Grid classes
@@ -143,7 +143,7 @@ At the bottom of the **index.html** page you will see this JavaScript block that
 
 ## Choosing the next slide
 
-Slides are pushed onto a JavaScript Array in the order that they are defined. When a slide is displayed, its value is `splice`d out of the array, and then `push`ed onto the end of the array when display is complete. The next slide is then chosen from the first **N** slides, where **N** is the value of **choiceSize** as defined above (the default value of **N** is 1). 
+Slides are `push`ed onto a JavaScript Array in the order that they are defined. When a slide is displayed, its value is `splice`d out of the array, and then `push`ed onto the end of the array when display is complete. The next slide is then randomly chosen from the first **N** slides, where **N** is the value of **choiceSize** as defined above (the default value of **N** is 1). 
 
 So if **N=1** then the slides will be displayed in definition order with no randomness (the very first value of the array will be chosen each time). If **N=2** then there will be a little bit of randomness in the display of slides (a random choice between the first 2 slides of the array). If **N=S-1** where **S** is the number of defined slides, then the next slide will be anything except the previous slide (which is at the end of the array at that time). If **N=S** then any slide could be chosen next, including the previous slide.
 
@@ -160,7 +160,6 @@ If multiple sponsor slides are defined, then they will be displayed in the order
 
 * advanced transitions
 * possible customization of "slide fade out" transition
-* move the scale/translate utility code into a separate library 
 
 
 ## Disclaimer
