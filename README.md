@@ -55,7 +55,7 @@ An example slide might look like this:
     </slide>
 ```
 
-This slide has three layers. The first one is of class **bkg** which auto-sizes an image within the layer to be the full browser width/height. The second & third layer are of class **gridded** which imposes a 5-by-5 CSS grid structure on the layer. Within the gridded layer you include a `<span>` with an appropriate class to take advantage of the grid (see table of classes below). 
+This slide has three layers. The first one is of class **bkg** which auto-sizes an image within the layer to be the full browser width/height. The second & third layer are of class **gridded** which imposes a 5-by-5 CSS grid structure on the layer. Within the gridded layer you include a `<span>` with an appropriate class to take advantage of the grid (see [table of classes below](#grid-classes)). 
 
 Note that each layer is displayed with a pause afterward, to allow the viewer to read each layer's contents before the next one shows up. If you were to put all of the spans in a single layer, it would display properly, but everything would show up at once. So remember that the program pauses between layers, rather than between spans or paragraphs.
 
@@ -139,8 +139,8 @@ At the bottom of the **index.html** page you will see this JavaScript block that
 
 * **defaultTransition, defaultLength** and **defaultDelay** are applied to any layers that do not have these values already applied to them. (See code for examples.)
 * **defaultTransition** is an appropriate animate.css class to use for the "fade-in" transition for layers, **defaultLength** is used for the `animationDuration` of each layer, and **defaultDelay** is used for `animationDelay`. You can override these values by setting appropriate classes and style settings on a layer.
-* **choiceSize** indicates how large the pool of prospective slides is when choosing the next slide (see choosing note below).
-* **sponsorDelay** is described in the sponsor slides section below.
+* **choiceSize** indicates how large the pool of prospective slides is when choosing the next slide (see [choosing note below](#choosing-the-next-slide)).
+* **sponsorDelay** is described in [the sponsor slides section below.](#sponsor-slides)
 * **debug** is a value that, when `true,` stops code execution just after everything has been set up, allowing you to examine the elements and execute arbitrary code against the Slides object. If you want to step through the animation loops, you can execute the function `Slides.loop()` in your developer's console.
 
 
