@@ -131,7 +131,7 @@ At the bottom of the **index.html** page you will see this JavaScript block that
 			defaultLength: '1s',
 			defaultDelay: '3s',
 			choiceSize: 1,
-            sponsorDelay: 5,
+			sponsorDelay: 5,
 			debug: true
 		});
 	</script>
