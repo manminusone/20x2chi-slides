@@ -3,7 +3,20 @@ var Slides = (function() {
 
 	var SlideList = Array(),SponsorSlideList = Array();
 	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s', sponsorDelay: '5' };
-	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false, slideCount: 0 };
+	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false, slideCount: 0,
+		resetLayers: function() {
+			// reset layers of current slide
+			this.Slide.LayerList.forEach(function(l,lNum) {
+				l.obj.className = l.defaultClass;
+				l.obj.style.animationDelay = l.delay;
+				l.obj.style.opacity=0;
+				for (var iter=0; iter < plugins.length; ++iter)
+					if (plugins[iter].fadeOut)
+						plugins[iter].fadeOut(l.obj);
+			});
+
+		} 
+	};
 
 	/** plugins **/
 
@@ -198,6 +211,7 @@ var Slides = (function() {
 		if (arguments.length >= 1)
 			evt = arguments[0];
 
+		console.log('animationLoop');
 		if (current.handleAnimStart) { // events being handled on the 'animationstart' event
 			return;
 		}
@@ -231,16 +245,8 @@ var Slides = (function() {
 			if (evt && (evt.type == 'manual-loop' || (evt.target && evt.target.nodeName == 'LAYER')) && current.fadesLeft > 0) {
 				--current.fadesLeft;
 				if (current.fadesLeft == 0) {
-					// reset layers of current slide
-					current.Slide.LayerList.forEach(function(l,lNum) {
-						l.obj.className = l.defaultClass;
-						l.obj.style.animationDelay = l.delay;
-						l.obj.style.opacity=0;
-						for (var iter=0; iter < plugins.length; ++iter)
-							if (plugins[iter].fadeOut)
-								plugins[iter].fadeOut(l.obj);
-					});
 
+					current.resetLayers();
 					// move on
 					chooseSlide();
 					current.status = 'fadeIn';
@@ -330,6 +336,19 @@ var Slides = (function() {
 					collectionForEach(document.getElementsByTagName('span'),  toggleFn);
 					collectionForEach(document.getElementsByTagName('p'),     toggleFn);
 					paused = ! paused;
+				}
+				if (keyName == 'ArrowRight') {
+					/* ? */
+					console.log(' -> '); 
+				}
+
+				if (keyName == 'PageDown') { // next slide
+					console.log(current);
+					current.resetLayers();
+					// move on
+					chooseSlide();
+					current.status = 'fadeIn';
+					setTimeout(animationLoop, 10);
 				}
 			});
 
