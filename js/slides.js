@@ -1,8 +1,12 @@
 var Slides = (function() {
 	'use strict';
 
+	// arrays storing the slides in order of appearance
 	var SlideList = Array(),SponsorSlideList = Array();
+	// default values of various values
 	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s', sponsorDelay: '5' };
+
+	// what's currently getting processed
 	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false, slideCount: 0,
 		resetLayers: function() {
 			// reset layers of current slide
@@ -18,7 +22,44 @@ var Slides = (function() {
 		} 
 	};
 
-	/** plugins **/
+
+	// utility function to find the parent of a given node
+	function findParent(node,tagName) {
+		var retval = null;
+		while (node) {
+			if (node.getParent.tagName == tagName)
+				return node.getParent;
+			else
+				node = node.getParent;
+		}
+		return null;
+	}
+	// like Array.forEach() but for HTMLCollections
+	function collectionForEach(coll, fn) {
+		for (var iter = 0; iter < coll.length; ++iter)
+			fn(coll.item(iter), iter, coll);
+	}
+
+
+
+
+	/*
+		This plugins mechanism is a way to have various styles provide different animations. 
+
+		Each item in the plugins Array can have the following values:
+
+		* name -- just a string to help the developer identify the plugin. May be useful in the future.
+
+		* canEdit -- a method that returns true if the layer object passed to it contains HTML elements that it can process
+
+		* canMulti -- returns true if it's possible to queue up multiple animations for the given layer object in one pass
+
+		* process -- given a layer object, this function makes any changes to the HTML to prepare it for being animated
+
+		* preCheck -- called at the start of an animation for any processing of objects. Returns true if any changes were made.
+
+		* fadeOut -- called to reset any processed items at the end of a fadeOut
+	 */
 
 	var plugins = Array();
 	plugins.push((function() {
@@ -93,11 +134,11 @@ var Slides = (function() {
 							var innerHtml = '';
 							t.split(' ').forEach(function(ch) { 
 								innerHtml += '<span class="split-item" data-anim="'+ 
-								// (span.dataset['anim'] || dflt.transition) + 
-								paraClass + 
-								'" style="display: inline-block; opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
-								ch+
-								'</span> '; });
+								 paraClass + 
+								 '" style="display: inline-block; opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
+								 ch+
+								 '</span> '; 
+							});
 							para.innerHTML = innerHtml;
 						});
 					})
@@ -149,18 +190,7 @@ var Slides = (function() {
 		};
 	})());
 
-
-	function findParent(node,tagName) {
-		var retval = null;
-		while (node) {
-			if (node.getParent.tagName == tagName)
-				return node.getParent;
-			else
-				node = node.getParent;
-		}
-		return null;
-	}
-
+	// save the currently processed slide object to the appropriate array and select the next one
 	function chooseSlide() {
 
 		if (current.Slide) {
@@ -182,10 +212,6 @@ var Slides = (function() {
 		current.layerPtr = 0;
 	}
 
-	function collectionForEach(coll, fn) {
-		for (var iter = 0; iter < coll.length; ++iter)
-			fn(coll.item(iter), iter, coll);
-	}
 
 
 	// onAnimationStart() is useful for handling animations that should be running at roughly the same time
@@ -241,10 +267,10 @@ var Slides = (function() {
 				current.status = 'fadeOut';
 				current.fadesLeft = current.Slide.LayerList.length;
 			}
-		} else if (current.status == 'fadeOut') {
+		} else if (current.status == 'fadeOut') { // fading out the current slide
 			if (evt && (evt.type == 'manual-loop' || (evt.target && evt.target.nodeName == 'LAYER')) && current.fadesLeft > 0) {
 				--current.fadesLeft;
-				if (current.fadesLeft == 0) {
+				if (current.fadesLeft == 0) { // ready to prep the next slide
 
 					current.resetLayers();
 					// move on
@@ -318,7 +344,6 @@ var Slides = (function() {
 					});
 				});
 
-				// SlideList[sNum] = addMe;
 				if (addMe.isSponsor)
 					SponsorSlideList.push(addMe);
 				else
