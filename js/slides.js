@@ -1,11 +1,61 @@
 var Slides = (function() {
 	'use strict';
 
+	// arrays storing the slides in order of appearance
 	var SlideList = Array(),SponsorSlideList = Array();
+	// default values of various values
 	var dflt = { transition: 'fadeIn', length: '3s', choiceSize: 1, delay: '3s', sponsorDelay: '5' };
-	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false, slideCount: 0 };
 
-	/** plugins **/
+	// what's currently getting processed
+	var current = { layerPtr: 0, Slide: '', status: '', fadesLeft: 0, handleAnimStart: false, slideCount: 0,
+		resetLayers: function() {
+			// reset layers of current slide
+			this.Slide.LayerList.forEach(function(l,lNum) {
+				l.obj.className = l.defaultClass;
+				l.obj.style.animationDelay = l.delay;
+				l.obj.style.animationDuration = l.duration;
+				l.obj.style.opacity=0;
+				for (var iter=0; iter < plugins.length; ++iter)
+					if (plugins[iter].fadeOut)
+						plugins[iter].fadeOut(l.obj);
+			});
+
+		} 
+	};
+
+
+	// utility function to find the parent of a given node
+	function findParent(node,tagName) {
+		var retval = null;
+		while (node) {
+			if (node.getParent.tagName == tagName)
+				return node.getParent;
+			else
+				node = node.getParent;
+		}
+		return null;
+	}
+	// like Array.forEach() but for HTMLCollections
+	function collectionForEach(coll, fn) {
+		for (var iter = 0; iter < coll.length; ++iter)
+			fn(coll.item(iter), iter, coll);
+	}
+
+
+
+
+	/*
+		This plugins mechanism is a way to have various styles provide different animations. 
+
+		Each item in the plugins Array can have the following values:
+
+		* name -- just a string to help the developer identify the plugin. May be useful in the future.
+		* canEdit -- a method that returns true if the layer object passed to it contains HTML elements that it can process
+		* canMulti -- returns true if it's possible to queue up multiple animations for the given layer object in one pass
+		* process -- given a layer object, this function makes any changes to the HTML to prepare it for being animated
+		* preCheck -- called at the start of an animation for any processing of objects. Returns true if any changes were made.
+		* fadeOut -- called to reset any processed items at the end of a fadeOut
+	 */
 
 	var plugins = Array();
 	plugins.push((function() {
@@ -80,11 +130,11 @@ var Slides = (function() {
 							var innerHtml = '';
 							t.split(' ').forEach(function(ch) { 
 								innerHtml += '<span class="split-item" data-anim="'+ 
-								// (span.dataset['anim'] || dflt.transition) + 
-								paraClass + 
-								'" style="display: inline-block; opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
-								ch+
-								'</span> '; });
+								 paraClass + 
+								 '" style="display: inline-block; opacity: 0; display: inline-block; animation-duration: 2s; animation-delay: 0.2s;">'+
+								 ch+
+								 '</span> '; 
+							});
 							para.innerHTML = innerHtml;
 						});
 					})
@@ -136,18 +186,7 @@ var Slides = (function() {
 		};
 	})());
 
-
-	function findParent(node,tagName) {
-		var retval = null;
-		while (node) {
-			if (node.getParent.tagName == tagName)
-				return node.getParent;
-			else
-				node = node.getParent;
-		}
-		return null;
-	}
-
+	// save the currently processed slide object to the appropriate array and select the next one
 	function chooseSlide() {
 
 		if (current.Slide) {
@@ -169,10 +208,6 @@ var Slides = (function() {
 		current.layerPtr = 0;
 	}
 
-	function collectionForEach(coll, fn) {
-		for (var iter = 0; iter < coll.length; ++iter)
-			fn(coll.item(iter), iter, coll);
-	}
 
 
 	// onAnimationStart() is useful for handling animations that should be running at roughly the same time
@@ -187,12 +222,13 @@ var Slides = (function() {
 				if (plugins[iter].preCheck) {
 					var retval = plugins[iter].preCheck(current.Layer.obj, evt, current.Layer);
 					if (retval) {
-						return;
+						return; // FIXME - note that no other plugins are run if one succeeds. Will probably have to modify if more plugins are created
 					}
 				}
 		}
 	}
 
+	/* animationLoop -- called at the end of each animation event (or at the very beginning of the animation) to start the next animation */ 
 	function animationLoop() {
 		var evt;
 		if (arguments.length >= 1)
@@ -202,6 +238,8 @@ var Slides = (function() {
 			return;
 		}
 
+		/* 'fadeIn' and 'fadeOut' below do not correspond to the transitions in animate.css. They're just constants that indicate whether we are currently 
+			revealing layers in the current slide (fadeIn) or ready to fade out the current slide and move on to the next one (fadeOut). */
 		if (current.status == 'fadeIn') {  // fading in all layers			
 			if (current.layerPtr < current.Slide.LayerList.length) {
 				current.Layer = current.Slide.LayerList[current.layerPtr];
@@ -223,24 +261,17 @@ var Slides = (function() {
 				current.Slide.LayerList.forEach(function(l,lNum) {
 					l.obj.className = l.defaultClass + ' fadeOut animated';
 					l.obj.style.animationDelay = dflt.delay;
+					l.obj.style.animationDuration = '1s';
 				});
 				current.status = 'fadeOut';
-				current.fadesLeft = current.Slide.LayerList.length;
+				current.fadesLeft = current.Slide.LayerList.length; // this value decremented by each slide fading out
 			}
-		} else if (current.status == 'fadeOut') {
+		} else if (current.status == 'fadeOut') { // fading out the current slide
 			if (evt && (evt.type == 'manual-loop' || (evt.target && evt.target.nodeName == 'LAYER')) && current.fadesLeft > 0) {
 				--current.fadesLeft;
-				if (current.fadesLeft == 0) {
-					// reset layers of current slide
-					current.Slide.LayerList.forEach(function(l,lNum) {
-						l.obj.className = l.defaultClass;
-						l.obj.style.animationDelay = l.delay;
-						l.obj.style.opacity=0;
-						for (var iter=0; iter < plugins.length; ++iter)
-							if (plugins[iter].fadeOut)
-								plugins[iter].fadeOut(l.obj);
-					});
+				if (current.fadesLeft == 0) { // ready to prep the next slide
 
+					current.resetLayers();
 					// move on
 					chooseSlide();
 					current.status = 'fadeIn';
@@ -308,11 +339,11 @@ var Slides = (function() {
 						defaultClass: l.classList.toString(),
 						canMulti: canMulti,
 						delay: l.style.animationDelay ? l.style.animationDelay : (lNum == 0 ? '' : dflt.delay),
+						duration: l.style.animationDuration ? l.style.animationDuration : '1s',
 						animClass: l.dataset['anim'] || dflt.transition,
 					});
 				});
 
-				// SlideList[sNum] = addMe;
 				if (addMe.isSponsor)
 					SponsorSlideList.push(addMe);
 				else
@@ -330,6 +361,19 @@ var Slides = (function() {
 					collectionForEach(document.getElementsByTagName('span'),  toggleFn);
 					collectionForEach(document.getElementsByTagName('p'),     toggleFn);
 					paused = ! paused;
+				}
+				if (keyName == 'ArrowRight') {
+					/* ? */
+					console.log(' -> '); 
+				}
+
+				if (keyName == 'PageDown') { // next slide
+					console.log(current);
+					current.resetLayers();
+					// move on
+					chooseSlide();
+					current.status = 'fadeIn';
+					setTimeout(animationLoop, 10);
 				}
 			});
 
