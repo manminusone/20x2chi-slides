@@ -188,12 +188,12 @@ var Slides = (function() {
 
 	// save the currently processed slide object to the appropriate array and select the next one
 
-	var HISTORY = Array(), HISTORY_PTR = -1;
+	var HISTORY = Array(), HISTORY_PTR = 0;
 	function chooseSlide() {
 		console.log('- START OF FN', HISTORY_PTR, HISTORY);
 
 		if (current.Slide) {
-			if (HISTORY_PTR == HISTORY.length) { // not replaying history
+			if (HISTORY_PTR == 0) { // not replaying history
 				if (current.Slide.isSponsor) {
 					SponsorSlideList.push(current.Slide);
 					current.slideCount = 0;
@@ -201,15 +201,12 @@ var Slides = (function() {
 					SlideList.push(current.Slide);
 					++current.slideCount;
 				}
-			} else  {
-				++HISTORY_PTR;
-				console.log('moving to slide ',HISTORY_PTR);
-			}
+			} 
 			current.Slide = '';
 		}
 
-		if (HISTORY.length > 0 && HISTORY_PTR < HISTORY.length) {
-			current.Slide = HISTORY[HISTORY_PTR];
+		if (HISTORY.length > 0 && HISTORY_PTR > 0) {
+			current.Slide = HISTORY[HISTORY.length - HISTORY_PTR];
 		} else {
 			// it's possible that there are no slides in SlideList
 			if (SponsorSlideList.length > 0 && (SlideList.length == 0 || current.slideCount >= dflt.sponsorDelay))
@@ -218,7 +215,6 @@ var Slides = (function() {
 				current.Slide = SlideList.splice(Math.floor(Math.random() * Math.floor(dflt.choiceSize)), 1)[0]
 
 			HISTORY.push(current.Slide);
-			HISTORY_PTR = HISTORY.length;
 		}
 		console.log('- END OF FN', HISTORY_PTR, HISTORY);
 		current.layerPtr = 0;
@@ -289,6 +285,7 @@ var Slides = (function() {
 
 					current.resetLayers();
 					// move on
+					if (HISTORY_PTR > 0) --HISTORY_PTR;
 					chooseSlide();
 					current.status = 'fadeIn';
 					setTimeout(animationLoop, 10);
@@ -387,6 +384,9 @@ var Slides = (function() {
 					console.log(current);
 					current.resetLayers();
 					// move on
+					console.log('PAGE DN', HISTORY_PTR);
+					if (HISTORY_PTR > 0) --HISTORY_PTR;
+					console.log('PAGE DN', HISTORY_PTR);
 					chooseSlide();
 					current.status = 'fadeIn';
 					setTimeout(animationLoop, 10);
@@ -394,8 +394,8 @@ var Slides = (function() {
 
 				if (keyName == 'PageUp') { // previous slide
 					current.resetLayers();
-					HISTORY_PTR -= 2;
-					if (HISTORY_PTR < -1) HISTORY_PTR = -1;
+					HISTORY_PTR += 1;
+					if (HISTORY_PTR - HISTORY.length > 0) --HISTORY_PTR;
 					// move on
 					chooseSlide();
 					current.status = 'fadeIn';
