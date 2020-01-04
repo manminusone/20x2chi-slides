@@ -203,7 +203,7 @@ var Slides = (function() {
 		if (SponsorSlideList.length > 0 && (SlideList.length == 0 || current.slideCount >= dflt.sponsorDelay))
 			current.Slide = SponsorSlideList.shift();
 		else
-			current.Slide = SlideList.splice(Math.floor(Math.random() * Math.floor(dflt.choiceSize)), 1)[0]
+			current.Slide = SlideList.splice(Math.floor(Math.random() * Math.floor(Math.min(dflt.choiceSize, SlideList.length))), 1)[0]
 
 		current.layerPtr = 0;
 	}
